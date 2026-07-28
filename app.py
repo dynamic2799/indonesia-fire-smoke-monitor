@@ -158,8 +158,9 @@ div[data-testid="stPlotlyChart"] { margin-top: -0.35rem; }
 st.markdown(
     """
 <div class="main-header">
-    <h1>Berau Fire & Smoke Monitor</h1>
+    <h1>Indonesia Fire & Smoke Monitor</h1>
     <p>Dashboard operasional untuk pemantauan hotspot dan indikasi asap berbasis Himawari Smoke RGB.</p>
+    <p>Indonesia coverage dan Area khusus Pemantauan Kab. Berau</p>
     <p>Created by ulil.hidayat@bmkg.go.id & Tim BMKG Berau</p>
 </div>
 """,
@@ -1065,15 +1066,20 @@ with st.sidebar:
             "Aktifkan download otomatis",
             value=False,
         )
-        ptree_username = st.text_input(
-            "Username P-Tree",
-            value=os.getenv("PTREE_USERNAME", ""),
-        )
-        ptree_password = st.text_input(
-            "Password P-Tree",
-            value=os.getenv("PTREE_PASSWORD", ""),
-            type="password",
-        )
+        def get_secret(name, default=""):
+            try:
+                return st.secrets.get(name, default)
+            except Exception:
+                return os.getenv(name, default)
+        
+        ptree_username = get_secret("PTREE_USERNAME")
+        ptree_password = get_secret("PTREE_PASSWORD")
+        
+        if ptree_username and ptree_password:
+            st.success("P-Tree credentials configured securely.")
+        else:
+            st.error("P-Tree credentials belum tersedia.")
+            
         ahi_suffix = st.selectbox(
             "Grid AHI",
             ["02801_02401", "02401_02401", "07001_06001", "06001_06001"],
@@ -1101,7 +1107,7 @@ with st.sidebar:
             index=0,
         )
         marker_by_frp = st.checkbox("Marker mengikuti FRP", value=False)
-        marker_size = st.slider("Ukuran marker", 10, 100, 35)
+        marker_size = st.slider("Ukuran marker", 5, 100, 10)
 
     refresh_now = st.button(
         "Refresh dashboard",
