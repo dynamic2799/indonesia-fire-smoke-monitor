@@ -1127,7 +1127,7 @@ with st.sidebar:
         type="primary",
         use_container_width=True,
     )
-    st.caption("Hourly rerun aktif selama Streamlit tetap berjalan.")
+    st.caption("Rerun otomatis setiap 30 menit selama Streamlit tetap berjalan.")
 
 
 # ============================================================
@@ -1135,12 +1135,12 @@ with st.sidebar:
 # ============================================================
 if st_autorefresh is not None:
     st_autorefresh(
-        interval=60 * 60 * 1000,
-        key="hourly_refresh",
+        interval=30 * 60 * 1000,
+        key="auto_refresh_30_minutes",
     )
 else:
     st.sidebar.warning(
-        "Auto-refresh hourly belum aktif karena paket "
+        "Auto-refresh per30minute belum aktif karena paket "
         "`streamlit-autorefresh` belum terpasang."
     )
 
@@ -1505,7 +1505,7 @@ B = B06, vmin 8, vmax 60, gamma 3.0
         """
 #### Cara kerja otomatis
 
-1. Aplikasi melakukan rerun otomatis setiap 1 jam bila paket `streamlit-autorefresh` tersedia.
+1. Aplikasi melakukan rerun otomatis setiap 30 menit bila paket `streamlit-autorefresh` tersedia.
 2. Aplikasi mencari NetCDF Himawari terbaru berdasarkan timestamp nama file.
 3. Bila timestamp belum berubah, dashboard tetap memakai produk terakhir.
 4. Bila timestamp baru ditemukan, hotspot dicocokkan pada jam yang sama, menit `00`.
@@ -1519,6 +1519,6 @@ B = B06, vmin 8, vmax 60, gamma 3.0
 
 st.divider()
 st.caption(
-    "Pemeriksaan otomatis berlangsung setiap 1 jam selama aplikasi tetap berjalan. "
+    "Pemeriksaan otomatis berlangsung setiap 30 menit selama aplikasi tetap berjalan. "
     "Smoke RGB menunjukkan indikasi visual, bukan klasifikasi asap otomatis."
 )
