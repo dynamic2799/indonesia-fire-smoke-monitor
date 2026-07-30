@@ -774,7 +774,7 @@ def read_hotspot(csv_path, area, minimum_reliability):
 # ============================================================
 # PRODUCT HELPERS
 # ============================================================
-def marker_sizes(hotspot, base_size=35, marker_by_frp=False):
+def marker_sizes(hotspot, base_size=10, marker_by_frp=False):
     sizes = np.full(len(hotspot), float(base_size))
 
     if (
@@ -827,7 +827,7 @@ def prepare_product_data(
     }
 
 
-def render_png_product(product, marker_size=35, marker_by_frp=False):
+def render_png_product(product, marker_size=15, marker_by_frp=False):
     lon = product["lon"]
     lat = product["lat"]
     rgb = product["rgb"]
@@ -905,7 +905,7 @@ def render_png_product(product, marker_size=35, marker_by_frp=False):
     return buffer.getvalue()
 
 
-def render_interactive_product(product, marker_size=35, marker_by_frp=False):
+def render_interactive_product(product, marker_size=10, marker_by_frp=False):
     lon = product["lon"]
     lat = product["lat"]
     rgb = product["rgb"]
@@ -1120,7 +1120,7 @@ with st.sidebar:
             index=0,
         )
         marker_by_frp = st.checkbox("Marker mengikuti FRP", value=False)
-        marker_size = st.slider("Ukuran marker", 10, 100, 35)
+        marker_size = st.slider("Ukuran marker", 5, 100, 10)
 
     refresh_now = st.button(
         "Refresh dashboard",
