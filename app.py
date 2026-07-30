@@ -214,6 +214,24 @@ for key, value in DEFAULT_STATE.items():
 
 
 # ============================================================
+# SECURE CREDENTIALS
+# ============================================================
+def get_secret(name, default=""):
+    """
+    Ambil credential dari Streamlit Secrets.
+    Jika dijalankan lokal, gunakan environment variable sebagai fallback.
+    """
+    try:
+        return st.secrets.get(name, default)
+    except Exception:
+        return os.getenv(name, default)
+
+
+PTREE_USERNAME = get_secret("PTREE_USERNAME", "")
+PTREE_PASSWORD = get_secret("PTREE_PASSWORD", "")
+
+
+# ============================================================
 # FILE HELPERS
 # ============================================================
 AHI_PATTERN = re.compile(
@@ -1066,15 +1084,15 @@ with st.sidebar:
             "Aktifkan download otomatis",
             value=False,
         )
-        ptree_username = st.text_input(
-            "Username P-Tree",
-            value=os.getenv("PTREE_USERNAME", ""),
-        )
-        ptree_password = st.text_input(
-            "Password P-Tree",
-            value=os.getenv("PTREE_PASSWORD", ""),
-            type="password",
-        )
+        ptree_username = PTREE_USERNAME
+        ptree_password = PTREE_PASSWORD
+
+        if ptree_username and ptree_password:
+            st.success("P-Tree credentials configured securely.")
+        else:
+            st.warning(
+                "Credential P-Tree belum dikonfigurasi di Streamlit Secrets."
+            )
         ahi_suffix = st.selectbox(
             "Grid AHI",
             ["02801_02401", "02401_02401", "07001_06001", "06001_06001"],
