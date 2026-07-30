@@ -161,6 +161,7 @@ st.markdown(
     <h1>Indonesia Fire & Smoke Monitor</h1>
     <p>Dashboard operasional untuk pemantauan hotspot dan indikasi asap berbasis Himawari Smoke RGB.</p>
     <p>Indonesia Coverage dan Area Khusus Pemantauan Kab. Berau</p>
+    <p>Created by ulil.hidayat@bmkg.go.id & Tim BMKG Berau</p>
 </div>
 """,
     unsafe_allow_html=True,
