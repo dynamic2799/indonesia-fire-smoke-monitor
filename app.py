@@ -1133,16 +1133,24 @@ with st.sidebar:
 # ============================================================
 # AUTO REFRESH + AUTO DOWNLOAD
 # ============================================================
-if st_autorefresh is not None:
-    st_autorefresh(
-        interval=30 * 60 * 1000,
-        key="auto_refresh_30_minutes",
-    )
-else:
-    st.sidebar.warning(
-        "Auto-refresh per30minute belum aktif karena paket "
-        "`streamlit-autorefresh` belum terpasang."
-    )
+# ============================================================
+# NATIVE STREAMLIT AUTO REFRESH
+# ============================================================
+@st.fragment(run_every="30m")
+def auto_refresh_app():
+    now_utc = datetime.now(timezone.utc)
+
+    if "last_auto_refresh" not in st.session_state:
+        st.session_state.last_auto_refresh = now_utc
+        return
+
+    elapsed = now_utc - st.session_state.last_auto_refresh
+
+    if elapsed >= timedelta(minutes=29):
+        st.session_state.last_auto_refresh = now_utc
+        st.rerun()
+
+auto_refresh_app()
 
 run_integrated_download = (
     auto_download_enabled
